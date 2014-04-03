@@ -55,12 +55,19 @@ namespace cs296
     {
       
       b2EdgeShape shape; 
-      shape.Set(b2Vec2(-20.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+      shape.Set(b2Vec2(-2.5f, 3.5f), b2Vec2(-2.5f, 21.5f));
       b2BodyDef bd; 
-      b1 = m_world->CreateBody(&bd); 
-      b1->CreateFixture(&shape, 0.0f);
-      shape.Set(b2Vec2(-20.0f, 20.0f), b2Vec2(20.0f, 0.0f));
-      b1->CreateFixture(&shape, 0.0f);
+      b1 = m_world->CreateBody(&bd);
+      
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+//      fd.friction = 0.1f;
+      fd.filter.categoryBits = 0x0003;
+       
+      b1->CreateFixture(&fd);      
+      shape.Set(b2Vec2(4.5f, 3.5f), b2Vec2(4.5f, 28.5f));
+      b1->CreateFixture(&fd);
     }
           
     //Top horizontal block
