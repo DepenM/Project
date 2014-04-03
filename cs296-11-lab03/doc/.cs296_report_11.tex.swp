@@ -1,0 +1,90 @@
+% CS 296 Latex Document
+\documentclass[11pt]{article}
+\usepackage{geometry}
+
+\geometry{top=1in, bottom=1in, left=0.5in, right=0.5in}
+\usepackage{graphicx}
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\begin{document}
+\title{\vspace{15ex}\Huge{Physics Behind the Simulation: A CS296 Report by Group 11}\vspace{15ex}}
+
+\author{Zubin Arya\\
+120050036\\
+\texttt{zubinarya@gpo.iitb.ac.in}
+\and
+Paramdeep Singh\\
+120050085\\
+\texttt{120050085@gpo.iitb.ac.in}
+\and
+Depen Morwani\\
+120050015\\
+\texttt{120050015@gpo.iitb.ac.in}
+}
+\date{\today}
+
+\maketitle
+\newpage
+\section{Introduction}
+This report attempts to explain the physics behind the simulation of Box2D
+objects. This is a part of our third CS296 Lab Assignment.The main purpose of this Assignment is to understand how box2d objects are created and configure various attributes of object such as mobility,position,density,shape, mass distribution and hence center of mass and so on.It also aims at understanding how to induce a desirable interaction between objects which is an integral part of any simulation.This involves properties like coefficient of restitutuion for collisions,friction coefficient,elasticity etc. We had to create three Box2D as a part of this assignment and this report focuses only on the mechnisms of those objects.
+\section{Physics behind the simulation}
+\subsection{Ball}
+This ball is basically a solid sphere of uniform density.It is dynamic in nature i.e. it can undergo both translation and rotation.It initially rests on a horizontal platform hinged at the middle.It sets into motion when another ball lands on the platform and strikes it after tilting motion of the platform forces it to slide down and collide with it.After this it leaves the platform under the influence of gravity and lands on one end of a seesaw fixed on the ground pushing it down in tilting motion.After that it slides down the seesaw and makes its way into the ground where it collides with a massive static wall and rebounds its way before coming to a hault.The equations involved are
+
+
+Angular Momentum Conservation\cite{ang_momt}
+
+\begin{equation}I_i*\omega_i=I_f*\omega_f\end{equation}
+$$I_i=Initial Moment of Inertia(kg*m/s^2)$$
+$$I_f=Initial Moment of Inertia(kg*m/s^2)$$
+$$\omega_i=initial angular velocity(rad/s)$$
+$$\omega_f=final angular velocity(rad/s)$$
+
+Newton's Second Law
+
+\begin{equation}F=M*a\end{equation}
+$$F=Force(Newton)$$
+$$M=Mass(kg)$$
+$$a=acceleration(m/s^2)$$
+
+
+
+\includegraphics[scale=4]{ball}
+
+\subsection{Platform}
+This object is a horizontal platform hinged at the middle.So it can freely rotate about its center and but cannot undergo translation.Its shape is of a cuboid with uniform density.It sets into motion when inelastic ball falls on its surface.The equation(s) involved is(are)
+\newline
+Conservation of Momentum\cite{momt}
+\begin{equation}M_1*u_1+M_2*u_2=M_1*v_1+M_2*v_2\end{equation}
+$$M_1=Mass of first body(kg)$$
+$$M_2=Mass of second body(kg)$$
+$$u_1=initial velocity of first body(m/s)$$
+$$u_2=initial velocity of second body(m/s)$$
+$$v_1=final velocity of first body(m/s)$$
+$$v_2=final velocity of second body(m/s)$$
+\includegraphics[scale=4]{platform}
+
+\subsection{Wall}
+This object is cuboid of uniform density vertically oriented with one end fixed to the ground.It is immobile having practically infinite mass to ensue that it does not move even if it collides with a huge mass.The collision with the wall is defined by its coefficient of resitution.The collision is depicted when a ball collides with it and rebounds. The equation(s) involved is(are)
+Definition of Coefficient of Restitution\cite{coeff_rest}
+
+\begin{equation}e=\frac{v_2-u_2}{u_1-v_1}\end{equation}
+$$u_1=initial velocity of first body(m/s)$$
+$$v_1=initial velocity of second body(m/s)$$
+$$u_2=final velocity of first body(m/s)$$
+$$v_2-final velocity of second body(m/s)$$
+$$e=coefficient of restitution$$
+\includegraphics{Wall}
+
+\section{Conclusions}
+Behaviour of Objects is determined by their properties which can be easily specified in Box2D.Interaction between objects depends on the objects in consideration and their
+attributes.Hence if we can completely control a simulation if we define each and every entity or object appropriately.
+\newpage
+\section{Bibliography}
+\bibliographystyle{plain}
+\bibliography{biblo}
+
+
+
+\end{document}
