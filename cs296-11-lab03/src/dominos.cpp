@@ -146,6 +146,9 @@ namespace cs296
       ground2->CreateFixture(&fd);
     }
     
+
+    
+    
     //Spring
     {
      b2DistanceJointDef distance_joint;
@@ -165,6 +168,51 @@ namespace cs296
 	distance_joint.dampingRatio=0.5f;
 	m_world->CreateJoint(&distance_joint);
    }
+   
+   
+   
+    //Internal horizontal block
+    {
+      b2PolygonShape shape;
+      shape.SetAsBox(6.0f, 1.2f);
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+//      fd.friction = 0.1f;
+      fd.filter.categoryBits = 0x0005;
+      fd.filter.maskBits = 0xFFFF & ~0x0003;
+	
+      b2BodyDef bd;
+      bd.position.Set(-16.0f, 26.0f);
+      ground1 = m_world->CreateBody(&bd);
+      ground1->CreateFixture(&fd);
+      
+      b2BodyDef bd2;
+      bd2.position.Set(-9.6f, 23.8f);
+      ground2 = m_world->CreateBody(&bd2);
+      shape.SetAsBox(0.4f, 1.0f);
+      ground2->CreateFixture(&fd);
+      
+      
+      b2WeldJointDef distance_joint;
+
+	 distance_joint.bodyA = ground1;
+
+	distance_joint.bodyB = ground2;
+
+	distance_joint.localAnchorA.Set(6.0f,-1.2f);
+
+	distance_joint.localAnchorB.Set(0.4f, 1.0f);
+
+//	distance_joint.length = 9.75f;
+
+	distance_joint.collideConnected = true;
+	distance_joint.frequencyHz=0.4f;
+	distance_joint.dampingRatio=0.5f;
+	m_world->CreateJoint(&distance_joint);
+	
+	
+    }   
     
 
     }
