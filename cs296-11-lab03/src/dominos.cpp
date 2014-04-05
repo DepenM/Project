@@ -52,7 +52,11 @@ namespace cs296
     b2Body* b1;
     b2Body* ground1;
     b2Body* ground2;
-    b2Body* ground3;  
+    b2Body* ground3;
+    b2Body* ground4;
+    b2Body* ground5;
+    b2Body* ground6;
+    m_world->SetGravity( b2Vec2(0,0) );  
     {
       
       b2EdgeShape shape; 
@@ -86,13 +90,15 @@ namespace cs296
       bd.position.Set(-8.0f, 25.0f);
       ground3 = m_world->CreateBody(&bd);
       ground3->CreateFixture(&fd);
+      
+      
     }
 
 
     //Bullets
     {
       b2PolygonShape shape;
-      shape.SetAsBox(2.5f, 1.25f);
+      shape.SetAsBox(2.5f, 1.2f);
 	
       b2FixtureDef fd;
       fd.shape = &shape;
@@ -106,7 +112,7 @@ namespace cs296
 	{
 	  b2BodyDef bd;
 	  bd.type = b2_dynamicBody;
-	  bd.position.Set(1.0f, 16.85f + 2.5f * i);
+	  bd.position.Set(1.0f, 16.4f + 2.4f * i);
 	  b2Body* body = m_world->CreateBody(&bd);
 	  body->CreateFixture(&fd);
 	}
@@ -132,7 +138,7 @@ namespace cs296
      //Piston
     {
       b2PolygonShape shape;
-      shape.SetAsBox(3.5f, 1.5f);
+      shape.SetAsBox(3.5f, 1.0f);
       b2FixtureDef fd;
       fd.shape = &shape;
       fd.density = 20.0f;
@@ -142,7 +148,7 @@ namespace cs296
 	
       b2BodyDef bd;
       bd.type=b2_dynamicBody;
-      bd.position.Set(1.0f, 14.75f);
+      bd.position.Set(1.0f, 14.2f);
       ground2 = m_world->CreateBody(&bd);
       ground2->CreateFixture(&fd);
     }
@@ -160,9 +166,9 @@ namespace cs296
 
 	distance_joint.localAnchorA.Set(0.0f,-12.5f);
 
-	distance_joint.localAnchorB.Set(0.0f,-1.5f);
+	distance_joint.localAnchorB.Set(0.0f,-1.0f);
 
-	distance_joint.length = 9.75f;
+	distance_joint.length = 12.75f;
 
 	distance_joint.collideConnected = true;
 	distance_joint.frequencyHz=0.4f;
@@ -187,43 +193,58 @@ namespace cs296
       bd.position.Set(-16.0f, 26.0f);
       ground1 = m_world->CreateBody(&bd);
       ground1->CreateFixture(&fd);
+            
       
-      b2BodyDef bd2;
-      bd2.position.Set(-10.4f, 23.8f);
-      ground2 = m_world->CreateBody(&bd2);
+      shape.SetAsBox(0.4f, 1.0f, b2Vec2(-4.1f, -2.2f), 0);
+      ground1->CreateFixture(&fd);
+      
+  }
+  
+      //Small block
+    {
+      b2PolygonShape shape;
       shape.SetAsBox(0.4f, 1.0f);
-      ground2->CreateFixture(&fd);
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+//      fd.friction = 0.1f;
+      fd.filter.categoryBits = 0x0003;
+//      fd.filter.maskBits = 0xFFFF & ~0x0002;
+	
+      b2BodyDef bd;
+      bd.position.Set(-10.4f, 23.8f);
+      ground5 = m_world->CreateBody(&bd);
+      ground5->CreateFixture(&fd);
       
       
-      b2WeldJointDef distance_joint;
-
-	 distance_joint.bodyA = ground1;
-
-	distance_joint.bodyB = ground2;
-
-	distance_joint.localAnchorA.Set(6.0f,-1.2f);
-
-	distance_joint.localAnchorB.Set(0.4f, 1.0f);
-
-//	distance_joint.length = 9.75f;
-
-	distance_joint.collideConnected = true;
-	distance_joint.frequencyHz=0.4f;
-	distance_joint.dampingRatio=0.5f;
-	m_world->CreateJoint(&distance_joint);
-    }   
+    }
+      
+/*      b2EdgeShape shape; 
+      shape.Set(b2Vec2(-2.5f, 3.5f), b2Vec2(-2.5f, 21.5f));
+      b2BodyDef bd;
+      ground2 = m_world->CreateBody(&bd);
+      
+	b2PrismaticJointDef prismaticJointDef;
+	prismaticJointDef.bodyA = ground1;
+	prismaticJointDef.bodyB = ground2;
+	prismaticJointDef.collideConnected = false;
+	
+	ground1->CreateFixture(&prismaticJointDef);
+	ground2->CreateFixture(&prismaticJointDef);*/
+      
+      
     
 	//Horizontal Spring
     {
      b2DistanceJointDef distance_joint;
 
-	 distance_joint.bodyA = ground3;
+	 distance_joint.bodyA = ground5;
 
-	distance_joint.bodyB = ground2;
+	distance_joint.bodyB = ground1;
 
-	distance_joint.localAnchorA.Set(-12.5f,-1.2f);
+	distance_joint.localAnchorA.Set(-0.4f,0.0f);
 
-	distance_joint.localAnchorB.Set(-0.4f,0.0f);
+	distance_joint.localAnchorB.Set(-3.7f,-2.2f);
 
 	distance_joint.length = 3.75f;
 
@@ -232,10 +253,13 @@ namespace cs296
 	distance_joint.dampingRatio=0.5f;
 	m_world->CreateJoint(&distance_joint);
    }
+   
+   
+   //Trigger
    	{	      b2Body* b4;
       {
 		  
-	b2Vec2 vertices[5];
+	b2Vec2 vertices[3];
 vertices[0].Set(-1.0f, 0.0f);
 vertices[1].Set(1.0f, 0.0f);
 vertices[2].Set(-3.0f, -5.0f);
@@ -263,6 +287,72 @@ polygon.Set(vertices, count);
 	  
 
     }
+
+
+    //Sliding block
+    {
+		b2EdgeShape shape; 
+      shape.Set(b2Vec2(-13.2f, 1.85f), b2Vec2(13.2f, 1.85f));
+
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+//      fd.friction = 0.1f;
+      fd.filter.categoryBits = 0x0005;
+      fd.filter.maskBits = 0x0003;
+	
+      b2BodyDef bd;
+      bd.position.Set(-7.3f, 26.65f);
+      ground4 = m_world->CreateBody(&bd);
+      ground4->CreateFixture(&fd);
+      shape.Set(b2Vec2(-13.2f, -1.85f), b2Vec2(0.5f, -1.85f));
+      ground4->CreateFixture(&fd);
+      shape.Set(b2Vec2(5.5f, -1.85f), b2Vec2(13.2f, -1.85f));
+      ground4->CreateFixture(&fd);
+      shape.Set(b2Vec2(-13.2f, -1.85f), b2Vec2(-13.2f, 1.85f));
+      ground4->CreateFixture(&fd);
+      shape.Set(b2Vec2(13.2f, -1.85f), b2Vec2(13.2f, 1.85f));
+      ground4->CreateFixture(&fd);
+    }
+    
+      //Firing pin
+    {
+      b2PolygonShape shape;
+      shape.SetAsBox(2.0f, 0.6f);
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+//      fd.friction = 0.1f;
+      fd.filter.categoryBits = 0x0003;
+//      fd.filter.maskBits = 0xFFFF & ~0x0002;
+	
+      b2BodyDef bd;
+      bd.position.Set(1.5f, 26.0f);
+      ground6 = m_world->CreateBody(&bd);
+      ground6->CreateFixture(&fd);            
+    }    
+
+	//Firing Spring
+    {
+     b2DistanceJointDef distance_joint;
+
+	 distance_joint.bodyA = ground4;
+
+	distance_joint.bodyB = ground6;
+
+	distance_joint.localAnchorA.Set(13.2f,-0.65f);
+
+	distance_joint.localAnchorB.Set(2.0f,0.0f);
+
+	distance_joint.length = 5.0f;
+
+	distance_joint.collideConnected = true;
+	distance_joint.frequencyHz=0.4f;
+	distance_joint.dampingRatio=0.5f;
+	m_world->CreateJoint(&distance_joint);
+   }
+
+
 
 
     }
