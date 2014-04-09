@@ -7,13 +7,16 @@
 //! These are user defined include files
 //! Included in double quotes - the path to find these has to be given at compile time
 #include "callbacks.hpp"
+#include "dominos.hpp"
+
 
 #ifndef __APPLE__
 #include "GL/glui.h"
 #else
 #include "GL/glui.h"
 #endif
-
+extern b2Body* b4;
+extern b2Body* ground4;
 //! The namespace protects the global variables and other names from
 //! clashes in scope. Read about the use of named and unnamed
 //! namespaces in C++ Figure out where all the datatypes used below
@@ -116,6 +119,15 @@ namespace cs296
     case 'p':
       settings.pause = !settings.pause;
       break;
+      
+    case 't' :
+		b4->ApplyAngularImpulse( 500 ,true);
+		break;
+
+	case 'l' :
+		ground4->ApplyLinearImpulse( b2Vec2(1800.0f, 0.0f), b2Vec2(-20.5f, 26.65f), true);
+		break;	
+		
       
       //! The default case. Why is this needed?
     default:
