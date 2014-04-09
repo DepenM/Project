@@ -142,7 +142,7 @@ namespace cs296
       b2FixtureDef fd;
       fd.shape = &shape;
       fd.density = 20.0f;
-//      fd.friction = 0.1f;
+//      fd.friction = 0.2f;
       fd.filter.categoryBits = 0x0004;
       fd.filter.maskBits = 0x0002;
 	
