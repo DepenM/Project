@@ -121,7 +121,7 @@ namespace cs296
       break;
       
     case 't' :
-		b4->ApplyAngularImpulse( 500 ,true);
+		b4->ApplyAngularImpulse( 800 ,true);
 		break;
 
 	case 'l' :

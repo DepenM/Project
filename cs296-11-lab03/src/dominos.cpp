@@ -134,7 +134,7 @@ namespace cs296
 	
     }
       
-    //Vertical block
+    //Magazine
     {
       b2PolygonShape shape;
       shape.SetAsBox(3.5f, 12.5f);//, b2Vec2(-20.f,20.f), 0.0f);
@@ -250,7 +250,7 @@ namespace cs296
       
 
 
-    //Sliding block
+    //Slide
     {
 		b2EdgeShape shape; 
       shape.Set(b2Vec2(-13.2f, 1.85f), b2Vec2(13.2f, 1.85f));
@@ -306,7 +306,7 @@ namespace cs296
 
       
     
-	//Horizontal Spring
+	//Recoil Spring
     {///This is the spring connecting the small block and the slider
      b2DistanceJointDef distance_joint;
 
@@ -407,7 +407,7 @@ namespace cs296
       bd.position.Set(1.0f, 27.3f);
       ground = m_world->CreateBody(&bd);
       ground->CreateFixture(&fd);
-      fd.friction = 30.0f;
+      fd.friction = 50.0f;
       shape.Set(b2Vec2(-9.5f, 0.0f), b2Vec2(-7.5f, 0.0f));
       ground->CreateFixture(&fd);
       shape.Set(b2Vec2(-9.5f, -2.5f), b2Vec2(-7.5f, -2.5f));
